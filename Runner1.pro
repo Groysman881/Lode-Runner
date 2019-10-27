@@ -28,12 +28,18 @@ SOURCES += \
         main.cpp \
     hero.cpp \
     enemy.cpp \
-    game.cpp
+    game.cpp \
+    ground.cpp \
+    stairs.cpp \
+    map.cpp
 
 HEADERS += \
     hero.h \
     enemy.h \
-    game.h
+    game.h \
+    ground.h \
+    stairs.h \
+    map.h
 
 FORMS +=
 

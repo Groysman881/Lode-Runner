@@ -1,21 +1,25 @@
+#pragma once
 #ifndef GAME_H
 #define GAME_H
 #include <QGraphicsScene>
 #include "hero.h"
 #include "enemy.h"
+#include "ground.h"
+#include "stairs.h"
+#include "map.h"
 
 class Game
 {
 public:
     Game(QGraphicsScene* _scene);
-    void createLevel();
     QGraphicsScene* gScene;
-    qreal heroX();
-    qreal heroY();
+    Hero* createLevel();
 private:
-    int*** gameMap;
+    Map* _map;
     Hero* _hero;
-    Enemy* _enemy;
+    QVector<Enemy*> enemyVec;
+    QVector<Ground*> groundVec;
+    QVector<Stairs*> stairsVec;
 };
 
 #endif // GAME_H

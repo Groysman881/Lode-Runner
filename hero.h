@@ -22,6 +22,9 @@ private:
     Map* _map;
     int moveHCounter;
     int moveVCounter;
+    int X;
+    int Y;
+    bool isRightMove;
     //QList <QGraphicsItem* > items;
 };
 

@@ -26,11 +26,10 @@ Hero* Game::createLevel(){
             if(_map->getType(i,j) == 1){
                 _hero = new Hero(i * 20,j * 20,_map);
                 gScene->addItem(_hero);
-                qDebug()<<_hero->x();
-                qDebug()<<_hero->y();
+                _map->setHero(i,j);
             }
             else if(_map->getType(i,j) == 2){
-                enemyVec.push_back(new Enemy(i * 20,j * 20));
+                enemyVec.push_back(new Enemy(i * 20,j * 20, _map));
                 gScene->addItem(enemyVec.back());
             }
             else if(_map->getType(i,j) == 3){
@@ -43,6 +42,7 @@ Hero* Game::createLevel(){
             }
         }
     }
+    _map->setGVector(groundVec);
     _hero->setFlag(QGraphicsItem::ItemIsFocusable);
     _hero->setFocus();
 

@@ -13,6 +13,7 @@ int main(int argc, char *argv[])
     Game* myGame = new Game(my_scene);
     myGame->createLevel();
     QGraphicsView* my_view = new QGraphicsView(myGame->gScene);
+
     my_view->show();
     my_view->setFixedSize(800,600);
     return a.exec();

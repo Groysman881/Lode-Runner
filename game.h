@@ -7,6 +7,7 @@
 #include "ground.h"
 #include "stairs.h"
 #include "map.h"
+#include "gold.h"
 
 class Game
 {
@@ -20,6 +21,7 @@ private:
     QVector<Enemy*> enemyVec;
     QVector<Ground*> groundVec;
     QVector<Stairs*> stairsVec;
+    QVector<Gold*> goldVec;
 };
 
 #endif // GAME_H

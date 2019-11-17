@@ -32,8 +32,14 @@ Hero::Hero(int x,int y,Map* map){
     X = x;
     Y = y;
     isRightMove = true;
+    if(_map->getType(X/20,Y/20) == 5){ // ?????
+        goldCounter++;
+        _map->destroyGold(X/20,Y/20);
+    }
+
 
 }
+
 
 void Hero::keyPressEvent(QKeyEvent *event)
 {
@@ -44,13 +50,45 @@ void Hero::keyPressEvent(QKeyEvent *event)
     //qDebug()<<moveHCounter;
 
     if(_map != nullptr){
-        if(_map->isStairs(X/20,Y/20) && _map->isGround(X/20,Y/20)){
+        if(_map->isStairs(X/20,Y/20 + 1) && !_map->isStairs(X/20,Y/20)){
+            if(event->key() == Qt::Key_Down){
+                setPos(x(),y() + 10);
+                Y = Y + 10;
+                moveVCounter -= 1;
+                if(moveVCounter % 2 == 0 && moveVCounter != 0){
+                moveVCounter = 0;
+                _map->hMoveDown();
+                }
+            }
+            else if(event->key() == Qt::Key_Right && _map->isGround(X/20 + 1,Y / 20)){
+                setPos(x() + 10,y());
+                X = X + 10;
+                moveHCounter+=1;
+
+                if(moveHCounter % 2 == 0 && moveHCounter != 0 ){
+                    qDebug()<<moveHCounter;
+                    moveHCounter = 0;
+                    _map->hMoveRight();
+                }
+            }
+            else if(event->key() == Qt::Key_Left && _map->isGround(X/20 - 1,Y / 20)){
+                setPos(x() - 10,y());
+                X = X - 10;
+                moveHCounter-=1;
+                if(moveHCounter % 2 == 0 && moveHCounter != 0){
+                    moveHCounter = 0;
+                    _map->hMoveLeft();
+                }
+                isRightMove = false;
+            }
+        }
+        else if(_map->isStairs(X/20,Y/20) && _map->isGround(X/20,Y/20)){
             qDebug()<<"1st case";
             if(event->key() == Qt::Key_Up){
                 setPos(x(),y() - 10);
                 Y = Y - 10;
                 moveVCounter += 1;
-                if(moveHCounter % 2 == 0 && moveVCounter != 0){
+                if(moveVCounter % 2 == 0 && moveVCounter != 0){
                     moveVCounter = 0;
                 _map->hMoveUp();
                 }
@@ -93,7 +131,7 @@ void Hero::keyPressEvent(QKeyEvent *event)
                 setPos(x(),y() - 10);
                 Y = Y - 10;
                 moveVCounter += 1;
-                if(moveHCounter % 2 == 0 && moveVCounter != 0){
+                if(moveVCounter % 2 == 0 && moveVCounter != 0){
                     moveVCounter = 0;
                 _map->hMoveUp();
                 }
@@ -104,7 +142,7 @@ void Hero::keyPressEvent(QKeyEvent *event)
                 moveVCounter -= 1;
                 if(moveHCounter % 2 == 0 && moveVCounter != 0){
                 moveVCounter = 0;
-                _map->hMoveUp();
+                _map->hMoveDown();
                 }
             }
         }
@@ -135,10 +173,10 @@ void Hero::keyPressEvent(QKeyEvent *event)
             }
             else if(event->key() == Qt::Key_Shift){
                 qDebug()<<"TRUE1";
-                if(isRightMove){
+                if(isRightMove && _map->isGround(X/20 + 1,Y/20)){
                     _map->destroyGItem(X/20 + 1,Y/20 + 1);
                 }
-                else{
+                else if(!isRightMove && _map->isGround(X/20 - 1,Y/20)){
                     _map->destroyGItem(X/20 - 1,Y/20 + 1);
                 }
             }
@@ -171,6 +209,7 @@ void Hero::keyPressEvent(QKeyEvent *event)
             setPos(x() + 10,y());
             moveHCounter+=1;
 
+
             if(moveHCounter % 2 == 0 && moveHCounter != 0 ){
                 qDebug()<<moveHCounter;
             moveHCounter = 0;
@@ -181,19 +220,13 @@ void Hero::keyPressEvent(QKeyEvent *event)
     }
 }
 
-        /*if(event->key() == Qt::Key_Left){
-        setPos(x() - 10,y());
-    }
-    else if(event->key() == Qt::Key_Right){
-        setPos(x() + 10,y());
-    }
-    else if(event->key() == Qt::Key_Up){
-        setPos(x(),y() - 10);
-    }
-    else if(event->key() == Qt::Key_Down){
-        setPos(x(),y() + 10);
-    }*/
-
 void Hero::fall(){
-    setPos(x(),y() + 20);
+    setPos(x(),y() + 10);
+    Y = Y + 10;
+    moveVCounter -= 1;
+    if(moveHCounter % 2 == 0 && moveVCounter != 0){
+        moveVCounter = 0;
+        _map->hMoveDown();
+    }
 }
+

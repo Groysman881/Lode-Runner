@@ -2,7 +2,7 @@
 #define MAP_H
 #include <QVector>
 #include "ground.h"
-
+#include "gold.h"
 class Map
 {
 public:
@@ -25,9 +25,13 @@ public:
     void right(int x,int y);
     void destroyGItem(int x,int y);
     void setGVector(const QVector<Ground*>& g_vec);
+    void setGoldVector(const QVector<Gold*>& gold_vec);
+    void findStairs(int x,int y);
+    void destroyGold(int x,int y);
 private:
     int gameMap[40][30];
     QVector<Ground*> groundVec;
+    QVector<Gold*> goldVec;
     int heroX;
     int heroY;
 };

@@ -19,6 +19,8 @@ private:
     Map* _map;
     int X;
     int Y;
+    int moveHCounter;
+    int moveVCounter;
 };
 
 #endif // ENEMY_H

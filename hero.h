@@ -14,7 +14,6 @@ public:
     Hero(int x,int y);
     Hero(int x,int y, Map* map);
     void keyPressEvent(QKeyEvent *event) override;
-public slots:
     void fall();
 private:
     unsigned int health = 1;
@@ -25,6 +24,7 @@ private:
     int X;
     int Y;
     bool isRightMove;
+    size_t goldCounter;
     //QList <QGraphicsItem* > items;
 };
 

@@ -31,7 +31,8 @@ SOURCES += \
     game.cpp \
     ground.cpp \
     stairs.cpp \
-    map.cpp
+    map.cpp \
+    gold.cpp
 
 HEADERS += \
     hero.h \
@@ -39,7 +40,8 @@ HEADERS += \
     game.h \
     ground.h \
     stairs.h \
-    map.h
+    map.h \
+    gold.h
 
 FORMS +=
 

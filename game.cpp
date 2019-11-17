@@ -40,9 +40,14 @@ Hero* Game::createLevel(){
                 stairsVec.push_back(new Stairs(i * 20,j * 20));
                 gScene->addItem(stairsVec.back());
             }
+            else if(_map->getType(i,j) == 5){
+                goldVec.push_back(new Gold(i * 20,j * 20));
+                gScene->addItem(goldVec.back());
+            }
         }
     }
     _map->setGVector(groundVec);
+    _map->setGoldVector(goldVec);
     _hero->setFlag(QGraphicsItem::ItemIsFocusable);
     _hero->setFocus();
 

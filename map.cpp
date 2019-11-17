@@ -21,6 +21,10 @@ Map::Map()
     for(int i = 0;i < 21;i++){
         gameMap[30][i] = 4;
     }
+    for(int i = 0;i < 30;i++){
+        gameMap[i][0] = 3;
+    }
+    gameMap[22][20] = 5;
 }
 
 Map::Map(int mas[40][30]){
@@ -74,7 +78,7 @@ void Map::hMoveDown(){
     //gameMap[x][y + 1] = gameMap[x][y];
     /*gameMap[x][y] = 1;
     gameMap[x][y - 1] = 0;*/
-    heroY+=1;
+    heroY += 1;
 }
 void Map::hMoveRight(){
     //gameMap[x + 1][y] = gameMap[x][y];
@@ -139,4 +143,27 @@ void Map::setGVector(const QVector<Ground *> &g_vec){
         qDebug()<<i;
         groundVec.push_back(g_vec[i]);
     }
+}
+
+void Map::setGoldVector(const QVector<Gold *> &gold_vec){
+    for(int i =0;i < gold_vec.size();i++){
+        goldVec.push_back(gold_vec[i]);
+    }
+}
+
+void Map::findStairs(int x,int y){
+   bool isStairs = false;
+   while(!isStairs){
+
+   }
+}
+
+void Map::destroyGold(int x,int y){
+    for(int i = 0;i < goldVec.size();i++){
+        if((goldVec[i]->getX())/20 == x && (goldVec[i]->getY())/20 == y){
+            qDebug()<<"TRUE";
+            goldVec[i]->getDestroyed();
+            gameMap[x][y] = 0;
+        }
+   }
 }

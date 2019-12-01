@@ -1,20 +1,24 @@
 #ifndef GROUND_H
 #define GROUND_H
 #include <QGraphicsItem>
+#include <QGraphicsPixmapItem>
 
-class Ground : public QGraphicsRectItem
-{
+class Ground :public QObject, public QGraphicsPixmapItem {
+        Q_OBJECT
+
 public:
     Ground(int x,int y);
-    int getX(){return X;};
-    int getY(){return Y;};
+    ~Ground();
+    int getX();
+    int getY();
     void getDestroyed();
-    void appear();
     void setCurrentScene(QGraphicsScene* _scene);
+    void appear();
 private:
     int X;
     int Y;
     QGraphicsScene* currentScene;
+    QTimer* timer2;
 };
 
 #endif // GROUND_H

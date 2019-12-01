@@ -1,8 +1,9 @@
 #ifndef GOLD_H
 #define GOLD_H
 #include<QGraphicsRectItem>
+#include <QGraphicsPixmapItem>
 
-class Gold : public QGraphicsRectItem
+class Gold : public QGraphicsPixmapItem
 {
 public:
     Gold();

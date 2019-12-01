@@ -5,17 +5,6 @@
 
 Game::Game(QGraphicsScene* _scene){
     gScene = _scene;
-    /*int gameMap[40][30];
-    for(int i = 0;i < 40;i++){
-        for(int j = 0;j < 30;j++){
-            gameMap[i][j] = 0;
-        }
-    }
-    gameMap[0][0] = 1;
-    gameMap[10][2] = 2;
-    for(int i = 0;i < 40;i++){
-        gameMap[i][1] = 3;
-    }*/
     _map = new Map();
 }
 
@@ -34,6 +23,7 @@ Hero* Game::createLevel(){
             }
             else if(_map->getType(i,j) == 3){
                 groundVec.push_back(new Ground(i * 20,j * 20));
+                groundVec.back()->setCurrentScene(gScene);
                 gScene->addItem(groundVec.back());
             }
             else if(_map->getType(i,j) == 4){
@@ -50,6 +40,8 @@ Hero* Game::createLevel(){
     _map->setGoldVector(goldVec);
     _hero->setFlag(QGraphicsItem::ItemIsFocusable);
     _hero->setFocus();
+
+    //gScene->setBackgroundBrush(Qt::black);
 
     return _hero;
 }

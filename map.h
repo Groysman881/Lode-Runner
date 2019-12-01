@@ -3,7 +3,7 @@
 #include <QVector>
 #include "ground.h"
 #include "gold.h"
-class Map
+class Map : public QObject
 {
 public:
     Map();
@@ -19,15 +19,17 @@ public:
     void setHero(int x,int y);
     int getHeroX();
     int getHeroY();
-    void up(int x,int y);
-    void down(int x,int y);
-    void left(int x,int y);
-    void right(int x,int y);
+
     void destroyGItem(int x,int y);
     void setGVector(const QVector<Ground*>& g_vec);
     void setGoldVector(const QVector<Gold*>& gold_vec);
-    void findStairs(int x,int y);
+    int findStairsUp(int x,int y);
+    int findStairsDown(int x,int y);
     void destroyGold(int x,int y);
+    bool isDestrGround(int x,int y);
+    void makeEnemyGround(int x,int y);
+    void makeGround(int x,int y);
+    bool hIsGround(int x,int y);
 private:
     int gameMap[40][30];
     QVector<Ground*> groundVec;

@@ -3,14 +3,14 @@
 #define HERO_H
 #include <QGraphicsItem>
 #include <QObject>
+#include <QGraphicsPixmapItem>
 #include "map.h"
 
-class Hero : public QGraphicsRectItem{
-    Q_OBJECT_NO_OVERRIDE_WARNING
-
+class Hero : public QObject, public QGraphicsPixmapItem{
+        Q_OBJECT
 public:
     Hero();
-
+    ~Hero();
     Hero(int x,int y);
     Hero(int x,int y, Map* map);
     void keyPressEvent(QKeyEvent *event) override;

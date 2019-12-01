@@ -8,7 +8,8 @@ Gold::Gold()
 }
 
 Gold::Gold(int x,int y){
-    setRect(x,y,20,20);
+    setPos(x,y);
+    setPixmap(QPixmap(":/images/gold1.png"));
 }
 
 int Gold::getX(){

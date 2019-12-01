@@ -2,17 +2,29 @@
 #include <QGraphicsScene>
 #include <QTimer>
 #include <QDebug>
+#include <QGraphicsPixmapItem>
+#include <QObject>
 
-Ground::Ground(int x,int y)
+Ground::Ground(int x,int y) : QObject()
 {
-    setRect(x,y,20,20);
+    setPos(x,y);
+    setPixmap(QPixmap(":/images/ground1.png"));
     X = x;
     Y = y;
     currentScene = scene();
+
+
+}
+
+Ground::~Ground(){
+    delete currentScene;
 }
 
 void Ground::getDestroyed(){
+    qDebug()<<"DESTROY";
     scene()->removeItem(this);
+
+
 }
 
 void Ground::appear(){
@@ -22,4 +34,12 @@ void Ground::appear(){
 
 void Ground::setCurrentScene(QGraphicsScene* _scene){
     currentScene = _scene;
+}
+
+int Ground::getX(){
+    return X;
+}
+
+int Ground::getY(){
+    return Y;
 }

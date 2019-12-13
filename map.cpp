@@ -3,8 +3,6 @@
 #include <QVector>
 #include <QDebug>
 #include <QTimer>
-#include <QCoreApplication>
-#include <QEventLoop>
 
 Map::Map() : QObject()
 {
@@ -175,7 +173,7 @@ int Map::findStairsDown(int x, int y){
 void Map::destroyGold(int x,int y){
     for(int i = 0;i < goldVec.size();i++){
         if((goldVec[i]->getX())/20 == x && (goldVec[i]->getY())/20 == y){
-          //  qDebug()<<"TRUE";
+           // qDebug()<<"TRUE_GOLD";
             goldVec[i]->getDestroyed();
             gameMap[x][y] = 0;
         }
@@ -194,4 +192,11 @@ void Map::makeEnemyGround(int x,int y){
 
 void Map::makeGround(int x, int y){
     gameMap[x][y] = 3;
+}
+
+void Map::makeGraph(int size){
+    graph = new int* [size];
+    for(int i = 0;i < size;i++){
+        graph[i] = new int [size];
+    }
 }

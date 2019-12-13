@@ -2,8 +2,6 @@
 #include <QTimer>
 #include <QGraphicsScene>
 #include <QDebug>
-#include <QTime>
-#include <QCoreApplication>
 
 
 
@@ -21,7 +19,7 @@ Enemy::Enemy(int x,int y) : QObject()
 
 Enemy::Enemy(int x,int y,Map* eMap) : QObject(){
     setPos(x,y);
-    setPixmap(QPixmap(":/images/enemy1.png"));
+    setPixmap(QPixmap(":/new/images/enemy1.png"));
     X = x;
     Y = y;
     _map = eMap;
@@ -36,7 +34,7 @@ Enemy::Enemy(int x,int y,Map* eMap) : QObject(){
 
 void Enemy::find(){
     if(_map->isGround(X/20,Y/20) || _map->isStairs(X/20,Y/20)){
-    qDebug()<<"SLOTFIND";
+    //qDebug()<<"SLOTFIND";
     if(Y/20 == _map->getHeroY()){
         if(X/20 != _map->getHeroX()){
             if(X/20 > _map->getHeroX()){
@@ -103,14 +101,14 @@ void Enemy::fall(){
         return;
     }
     else if(_map->isDestrGround(X/20,Y/20)){
-        qDebug()<<"YEEES";
+        //qDebug()<<"YEEES";
         setPos(x(),y() + 20);
         Y += 20;
         _map->makeEnemyGround(X/20,Y/20);
         QTimer *timer = new QTimer(this);
         timer->setSingleShot(true);
          connect(timer, &QTimer::timeout, [=]() {
-             qDebug()<<"XEXEXEXEXEXEXEXEXE";
+             //qDebug()<<"XEXEXEXEXEXEXEXEXE";
              if(_map->hIsGround(X/20,Y/20 - 1)){
                  if(X/20 > _map->getHeroX()){
                     setPos(x() - 20,y() - 20);

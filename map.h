@@ -19,7 +19,7 @@ public:
     void setHero(int x,int y);
     int getHeroX();
     int getHeroY();
-
+    void makeGraph(int size);
     void destroyGItem(int x,int y);
     void setGVector(const QVector<Ground*>& g_vec);
     void setGoldVector(const QVector<Gold*>& gold_vec);
@@ -32,6 +32,7 @@ public:
     bool hIsGround(int x,int y);
 private:
     int gameMap[40][30];
+    int** graph;
     QVector<Ground*> groundVec;
     QVector<Gold*> goldVec;
     int heroX;

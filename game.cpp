@@ -10,6 +10,7 @@ Game::Game(QGraphicsScene* _scene){
 
 Hero* Game::createLevel(){
     //gScene->setSceneRect(0,0,800,600);
+    //int numInMatrix = 0;
     for(int i = 0; i < 40;i++){
         for(int j = 0;j < 30;j++){
             if(_map->getType(i,j) == 1){
@@ -44,4 +45,8 @@ Hero* Game::createLevel(){
     //gScene->setBackgroundBrush(Qt::black);
 
     return _hero;
+}
+
+void Game::createGraph(int size){
+    _map->makeGraph(size);
 }

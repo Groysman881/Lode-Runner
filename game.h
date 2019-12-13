@@ -15,6 +15,7 @@ public:
     Game(QGraphicsScene* _scene);
     QGraphicsScene* gScene;
     Hero* createLevel();
+    void createGraph(int size);
 private:
     Map* _map;
     Hero* _hero;

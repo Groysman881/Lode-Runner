@@ -14,7 +14,9 @@ public:
     Hero(int x,int y);
     Hero(int x,int y, Map* map);
     void keyPressEvent(QKeyEvent *event) override;
+public slots:
     void fall();
+    void getGold();
 private:
     unsigned int health = 1;
    // Hero* _game;

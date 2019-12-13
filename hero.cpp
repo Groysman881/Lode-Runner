@@ -11,8 +11,7 @@ Hero::Hero(int x,int y) : QObject()
     qDebug()<<"X"<<x;
     qDebug()<<"Y"<<y;
     setPos((qreal)x,(qreal)y);
-    setPixmap(QPixmap(":/images/hero1.png"));
-
+    setPixmap(QPixmap(":/new/images/hero1.png"));
     _map = nullptr;
     X = x;
     Y = y;
@@ -26,7 +25,7 @@ Hero::Hero(int x,int y,Map* map) : QObject()
  //   qDebug()<<"X"<<x;
   //  qDebug()<<"Y"<<y;
     setPos((qreal)x,(qreal)y);
-    setPixmap(QPixmap(":/images/hero1.png"));
+    setPixmap(QPixmap(":/new/images/hero1.png"));
     //setPos(x + 20,y);
     _map = map;
     moveHCounter = 0;
@@ -35,7 +34,8 @@ Hero::Hero(int x,int y,Map* map) : QObject()
     Y = y;
     isRightMove = true;
     QTimer *timer = new QTimer();
-    connect(timer,SLOT(timeout()),this,SLOT(fall()));
+    connect(timer,SIGNAL(timeout()),this,SLOT(getGold()));
+    //connect(timer,SIGNAL(timeout()),this,SLOT(fall()));
     timer->start(100);
 }
 
@@ -188,7 +188,8 @@ void Hero::keyPressEvent(QKeyEvent *event)
                 Y += 10;
                 moveVCounter -= 1;
                 if(moveVCounter % 2 == 0 && moveVCounter != 0){
-                moveVCounter = 0;
+                    _map->hMoveDown();
+                    moveVCounter = 0;
                 }
            }*/
         }
@@ -219,8 +220,6 @@ void Hero::keyPressEvent(QKeyEvent *event)
         else if(event->key() == Qt::Key_Right){
             setPos(x() + 10,y());
             moveHCounter+=1;
-
-
             if(moveHCounter % 2 == 0 && moveHCounter != 0 ){
               //  qDebug()<<moveHCounter;
             moveHCounter = 0;
@@ -232,8 +231,7 @@ void Hero::keyPressEvent(QKeyEvent *event)
 }
 
 void Hero::fall(){
-    if(!_map->hIsGround(X/20,Y/20)){
-        qDebug()<<"FALLLLL";
+    if(!_map->hIsGround(X/20,Y/20) && !_map->isStairs(X/20,Y/20) && !_map->isStairs(X/20,Y/20 + 1)){
         setPos(x(),y() + 10);
         Y = Y + 10;
         moveVCounter -= 1;
@@ -244,4 +242,10 @@ void Hero::fall(){
     }
 }
 
-
+void Hero::getGold(){
+    if(_map->getType(X/20,Y/20) == 5){
+        //qDebug()<<"GOOOOOOLD";
+        goldCounter++;
+        _map->destroyGold(X/20,Y/20);
+    }
+}

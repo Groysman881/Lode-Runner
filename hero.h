@@ -6,6 +6,8 @@
 #include <QGraphicsPixmapItem>
 #include "map.h"
 
+
+
 class Hero : public QObject, public QGraphicsPixmapItem{
         Q_OBJECT
 public:
@@ -17,6 +19,8 @@ public:
 public slots:
     void fall();
     void getGold();
+signals:
+    void signalUpdate();
 private:
     unsigned int health = 1;
    // Hero* _game;
@@ -29,5 +33,6 @@ private:
     size_t goldCounter;
     //QList <QGraphicsItem* > items;
 };
+
 
 #endif // HERO_H

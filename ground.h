@@ -3,7 +3,7 @@
 #include <QGraphicsItem>
 #include <QGraphicsPixmapItem>
 
-class Ground :public QObject, public QGraphicsPixmapItem {
+class Ground :public QObject, public QGraphicsRectItem{//public QGraphicsPixmapItem {
         Q_OBJECT
 
 public:

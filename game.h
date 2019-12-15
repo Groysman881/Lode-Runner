@@ -11,13 +11,15 @@
 
 class Game
 {
+
 public:
     Game(QGraphicsScene* _scene);
     QGraphicsScene* gScene;
     Hero* createLevel();
-    void createGraph(int size);
-private:
     Map* _map;
+
+private:
+    //Map* _map;
     Hero* _hero;
     QVector<Enemy*> enemyVec;
     QVector<Ground*> groundVec;

@@ -3,16 +3,16 @@
 #include <QVector>
 #include <QDebug>
 #include <QTimer>
+#include <QQueue>
 
 Map::Map() : QObject()
 {
-    for(int i = 0;i < 40;i++){
+   /* for(int i = 0;i < 40;i++){
         for(int j = 0;j < 30;j++){
             gameMap[i][j] = 0;
         }
     }
-    gameMap[20][20] = 1;
-    gameMap[10][20] = 2;
+
     for(int i = 0;i < 40;i++){
         gameMap[i][21] = 3;
     }
@@ -22,7 +22,44 @@ Map::Map() : QObject()
     for(int i = 0;i < 30;i++){
         gameMap[i][0] = 3;
     }
+    for(int i = 0 ;i < 30;i++){
+        gameMap[i][9] = 3;
+    }
     gameMap[22][20] = 5;
+    gameMap[20][8] = 2;
+    heroX = 20;
+    heroY = 20;*/
+    countOfGold = 1;
+    for(int i = 0;i < 40;i++){
+            for(int j = 0;j < 30;j++){
+                gameMap[i][j] = 0;
+            }
+        }
+    for(int i = 0;i < 40;i++){
+
+        gameMap[i][10] = 3;
+
+    }
+    for(int i = 0;i < 30;i++){
+        gameMap[0][i] = 3;
+        gameMap[39][i] = 3;
+        gameMap[30][i] = 4;
+        gameMap[10][i] = 4;
+
+    }
+
+    for(int i = 0;i < 40;i++){
+        gameMap[i][29] = 3;
+        gameMap[i][28] = 3;
+        gameMap[i][0] = 3;
+
+    }
+    gameMap[9][9] = 2;
+    gameMap[9][27] = 2;
+    gameMap[8][27] = 2;
+    gameMap[15][9] = 5;
+    heroX = 20;
+    heroY = 27;
 }
 
 Map::Map(int mas[40][30]) : QObject(){
@@ -31,6 +68,7 @@ Map::Map(int mas[40][30]) : QObject(){
             gameMap[i][j] = mas[i][j];
         }
     }
+    countOfGold = 1;
 }
 
 Map::Map(const QVector<Ground*>& g_vec) : QObject(){
@@ -51,7 +89,7 @@ Map::Map(const QVector<Ground*>& g_vec) : QObject(){
 }
 
 bool Map::hIsGround(int x, int y){
-    if(getType(x,y + 1) == 3 || getType(x,y + 1) == 7){
+    if(getType(x,y + 1) == 3 || getType(x,y + 1) == 7 || getType(x,y + 1) == 6){
         return true;
     }
     return false;
@@ -76,26 +114,26 @@ void Map::hMoveUp(){
     /*gameMap[x][y - 1] = gameMap[x][y];
     gameMap[x][y] = 1;
     gameMap[x][y + 1] = 0;*/
-    heroY -= 1;
+    heroY--;
 }
 
 void Map::hMoveDown(){
     //gameMap[x][y + 1] = gameMap[x][y];
     /*gameMap[x][y] = 1;
     gameMap[x][y - 1] = 0;*/
-    heroY += 1;
+    heroY++;
 }
 void Map::hMoveRight(){
     //gameMap[x + 1][y] = gameMap[x][y];
     /*gameMap[x][y] = 1;
     gameMap[x - 1][y] = 0;*/
-    heroX+=1;
+    heroX++;
 }
 void Map::hMoveLeft(){
    // gameMap[x - 1][y] = gameMap[x][y];
     /*gameMap[x][y] = 1;
     gameMap[x + 1][y] = 0;*/
-    heroX-=1;
+    heroX--;
 }
 void Map::setHero(int x, int y){
     heroX = x;
@@ -194,9 +232,109 @@ void Map::makeGround(int x, int y){
     gameMap[x][y] = 3;
 }
 
-void Map::makeGraph(int size){
-    graph = new int* [size];
-    for(int i = 0;i < size;i++){
-        graph[i] = new int [size];
+QStack<int>* Map::findPath(int x,int y){
+
+
+    for(int i = 0;i < 40;i++){
+        for(int j = 0;j < 30;j++){
+            dMap[i][j] = 2147483646;
+        }
     }
+    QQueue<Map::Coord> queue;
+    qDebug()<<"QUEUE";
+   /* if(isGround(x,y)){
+        dMap[x][y + 1] = 0;
+        queue.push_back(Coord(x,y + 1));
+    }
+    else{*/
+
+        dMap[x][y] = 0;
+        queue.push_back(Coord(x,y));
+
+    qDebug()<<queue.isEmpty();
+
+    while(!queue.isEmpty() && dMap[heroX][heroY] == 2147483646){
+        qDebug()<<"MainWhile";
+        Coord point = queue.front();
+        queue.pop_front();
+        if(isStairs(point._x,point._y)){
+            qDebug()<<"dStairs";
+            if((dMap[point._x - 1][point._y] >  dMap[point._x][point._y] + 1) && isGround(point._x - 1,point._y)){
+                dMap[point._x - 1][point._y] =  dMap[point._x][point._y] + 1;
+                queue.push_back(Coord(point._x - 1,point._y));
+            }
+            if((dMap[point._x + 1][point._y] >  dMap[point._x][point._y] + 1) && isGround(point._x + 1,point._y)){
+                dMap[point._x + 1][point._y] =  dMap[point._x][point._y] + 1;
+                queue.push_back(Coord(point._x + 1,point._y));
+            }
+            if(dMap[point._x][point._y + 1] > dMap[point._x][point._y] + 1 ){
+                dMap[point._x][point._y + 1] = dMap[point._x][point._y] + 1;
+                qDebug()<<"down";
+                queue.push_back(Coord(point._x,point._y + 1));
+            }
+            if(dMap[point._x][point._y - 1] > dMap[point._x][point._y] + 1){
+                dMap[point._x][point._y - 1] = dMap[point._x][point._y] + 1;
+                qDebug()<<"up";
+                queue.push_back(Coord(point._x,point._y - 1));
+            }
+            /*if((dMap[point._x - 1][point._y] >  dMap[point._x][point._y] + 1) && isGround(point._x - 1,point._y)){
+                dMap[point._x - 1][point._y] =  dMap[point._x][point._y] + 1;
+                queue.push_back(Coord(point._x - 1,point._y));
+            }
+            if((dMap[point._x + 1][point._y] >  dMap[point._x][point._y] + 1) && isGround(point._x + 1,point._y)){
+                dMap[point._x + 1][point._y] =  dMap[point._x][point._y] + 1;
+                queue.push_back(Coord(point._x + 1,point._y));
+            }*/
+        }
+        if(hIsGround(point._x,point._y)){
+             qDebug()<<"dGround";
+            if(dMap[point._x + 1][point._y] > dMap[point._x][point._y] + 1){
+                dMap[point._x + 1][point._y] = dMap[point._x][point._y] + 1;
+                qDebug()<<"right";
+                queue.push_back(Coord(point._x + 1,point._y));
+            }
+            if(dMap[point._x - 1][point._y] > dMap[point._x][point._y] + 1){
+                dMap[point._x - 1][point._y] = dMap[point._x][point._y] + 1;
+                qDebug()<<"left";
+                queue.push_back(Coord(point._x - 1,point._y));
+            }
+        }
+    }
+    qDebug()<<"BeforeStack";
+    QStack<int>* stack = new QStack<int>;
+    int hX = heroX;
+    int hY = heroY;
+    int tmp = dMap[hX][hY];
+    qDebug()<<tmp;
+    while(tmp > 0){
+        if(tmp > dMap[hX][hY + 1]){
+            qDebug()<<"1";
+            stack->push(1);
+            stack->push(1);
+            hY++;
+        }
+        else if(tmp > dMap[hX][hY - 1]){
+             qDebug()<<"2";
+            stack->push(2);
+            stack->push(2);
+            hY--;
+        }
+        else if(tmp > dMap[hX + 1][hY]){
+             qDebug()<<"3";
+            stack->push(3);
+            stack->push(3);
+            hX++;
+        }
+
+        else if(tmp > dMap[hX - 1][hY]){
+             qDebug()<<"4";
+            stack->push(4);
+            stack->push(4);
+            hX--;
+        }
+        tmp--;
+    }
+
+    return stack;
+
 }

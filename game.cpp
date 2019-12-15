@@ -6,20 +6,23 @@
 Game::Game(QGraphicsScene* _scene){
     gScene = _scene;
     _map = new Map();
+
 }
 
 Hero* Game::createLevel(){
     //gScene->setSceneRect(0,0,800,600);
     //int numInMatrix = 0;
+    _hero = new Hero(_map->getHeroX() * 20,_map->getHeroY() * 20,_map);
+    gScene->addItem(_hero);
     for(int i = 0; i < 40;i++){
         for(int j = 0;j < 30;j++){
             if(_map->getType(i,j) == 1){
-                _hero = new Hero(i * 20,j * 20,_map);
-                gScene->addItem(_hero);
-                _map->setHero(i,j);
+               // _hero = new Hero(i * 20,j * 20,_map);
+               // gScene->addItem(_hero);
             }
             else if(_map->getType(i,j) == 2){
-                enemyVec.push_back(new Enemy(i * 20,j * 20, _map));
+                enemyVec.push_back(new Enemy(i * 20,j * 20, _map,_hero));
+
                 gScene->addItem(enemyVec.back());
             }
             else if(_map->getType(i,j) == 3){
@@ -41,12 +44,7 @@ Hero* Game::createLevel(){
     _map->setGoldVector(goldVec);
     _hero->setFlag(QGraphicsItem::ItemIsFocusable);
     _hero->setFocus();
-
     //gScene->setBackgroundBrush(Qt::black);
-
     return _hero;
 }
 
-void Game::createGraph(int size){
-    _map->makeGraph(size);
-}

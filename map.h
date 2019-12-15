@@ -1,6 +1,7 @@
 #ifndef MAP_H
 #define MAP_H
 #include <QVector>
+#include <QStack>
 #include "ground.h"
 #include "gold.h"
 class Map : public QObject
@@ -19,7 +20,6 @@ public:
     void setHero(int x,int y);
     int getHeroX();
     int getHeroY();
-    void makeGraph(int size);
     void destroyGItem(int x,int y);
     void setGVector(const QVector<Ground*>& g_vec);
     void setGoldVector(const QVector<Gold*>& gold_vec);
@@ -30,13 +30,25 @@ public:
     void makeEnemyGround(int x,int y);
     void makeGround(int x,int y);
     bool hIsGround(int x,int y);
+    QStack<int>* findPath(int x,int y);
+    size_t countOfGold;
 private:
     int gameMap[40][30];
-    int** graph;
+    int dMap[40][30];
     QVector<Ground*> groundVec;
     QVector<Gold*> goldVec;
     int heroX;
     int heroY;
+    struct Coord{
+        Coord(int x,int y){
+            if(x >= 0 && x <= 40 && y >= 0 && y <= 30){
+                _x = x;
+                _y = y;
+            }
+        }
+        int _x;
+        int _y;
+    };
 };
 
 #endif // MAP_H

@@ -13,8 +13,9 @@ int main(int argc, char *argv[])
     Game* myGame = new Game(my_scene);
     myGame->createLevel();
     QGraphicsView* my_view = new QGraphicsView(myGame->gScene);
-
+    //myGame->_map->findPath(9,9);
     my_view->show();
+
     my_view->setHorizontalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     my_view->setVerticalScrollBarPolicy(Qt::ScrollBarAlwaysOff);
     my_view->setFixedSize(800,600);

@@ -3,7 +3,7 @@
 #include <QDebug>
 #include "map.h"
 
-Game::Game(QGraphicsScene* _scene){
+Game::Game(QGraphicsScene* _scene) : QObject(){
     gScene = _scene;
     _map = new Map();
 
@@ -14,6 +14,8 @@ Hero* Game::createLevel(){
     //int numInMatrix = 0;
     _hero = new Hero(_map->getHeroX() * 20,_map->getHeroY() * 20,_map);
     gScene->addItem(_hero);
+    connect(_hero,SIGNAL(goldDone()),this,SLOT(addExit()));
+    connect(_hero,SIGNAL(levelComplited()),this,SLOT(deleteLevel()));
     for(int i = 0; i < 40;i++){
         for(int j = 0;j < 30;j++){
             if(_map->getType(i,j) == 1){
@@ -38,6 +40,10 @@ Hero* Game::createLevel(){
                 goldVec.push_back(new Gold(i * 20,j * 20));
                 gScene->addItem(goldVec.back());
             }
+            else if(_map->getType(i,j) == 10){
+                exStairsVec.push_back(new Stairs(i * 20,j * 20));
+                _map->hideExStairs(i,j);
+            }
         }
     }
     _map->setGVector(groundVec);
@@ -46,5 +52,16 @@ Hero* Game::createLevel(){
     _hero->setFocus();
     //gScene->setBackgroundBrush(Qt::black);
     return _hero;
+}
+
+void Game::addExit(){
+    for(int i = 0;i < exStairsVec.size();i++){
+        gScene->addItem(exStairsVec[i]);
+        _map->addExStairs(exStairsVec[i]->getX()/20,exStairsVec[i]->getY()/20);
+    }
+}
+
+void Game::deleteLevel(){
+    qDebug()<<"DELETE";
 }
 

@@ -37,7 +37,7 @@ Enemy::Enemy(int x,int y,Map* eMap,Hero* h) : QObject(){
     connect(timer1,SIGNAL(timeout()),this,SLOT(find()));
     //connect(_hero,SIGNAL(signalUpdate()),this,SLOT(find()));
     connect(timer1,SIGNAL(timeout()),this,SLOT(getDestroyed()));
-    timer1->start(100);
+    timer1->start(125);
 }
 
 void Enemy::find(){
@@ -117,9 +117,9 @@ void Enemy::find(){
         temp = fStack->pop();
         switch (temp) {
              case 1 :{
-                setPos(x(),y() - 10);
-                qDebug()<<"UP";
-                Y -= 10;
+                setPos(x(),y() - 20);
+             //   qDebug()<<"UP";
+                Y -= 20;
                 moveVCounter++;
                 if(moveVCounter %2 == 0  && moveVCounter != 0){
                     moveVCounter = 0;
@@ -127,9 +127,9 @@ void Enemy::find(){
                 break;
              }
              case 2 :{
-                setPos(x(),y() + 10);
-                qDebug()<<"DOWN";
-                Y += 10;
+                setPos(x(),y() +20);
+             //   qDebug()<<"DOWN";
+                Y += 20;
                 moveVCounter--;
                 if(moveVCounter %2 == 0  && moveVCounter != 0){
                     moveVCounter = 0;
@@ -137,9 +137,9 @@ void Enemy::find(){
                         break;
                     }
                     case 3 :{
-                        setPos(x() - 10,y());
-                        qDebug()<<"LEFT";
-                        X -= 10;
+                        setPos(x() - 20,y());
+                   //     qDebug()<<"LEFT";
+                        X -= 20;
                         moveHCounter--;
                         if(moveHCounter %2 == 0  && moveHCounter != 0){
                             moveHCounter = 0;
@@ -147,9 +147,9 @@ void Enemy::find(){
                         break;
                     }
                     case 4 :{
-                        setPos(x() + 10,y());
-                        qDebug()<<"RIGHT";
-                        X += 10;                      
+                        setPos(x() + 20,y());
+                   //     qDebug()<<"RIGHT";
+                        X += 20;
                         moveHCounter++;
                         if(moveHCounter %2 == 0  && moveHCounter != 0){
                         moveHCounter = 0;
@@ -213,13 +213,16 @@ void Enemy::getDestroyed(){
 }
 
 void Enemy::updatePath(){
-    qDebug()<<"UPDATEPATH";
-    qDebug()<<!_map->isGround(X/20 - 1,Y/20 - 1);
-    qDebug()<< !_map->isGround(X/20 + 1,Y/20 - 1);
-    qDebug()<<  !_map->isStairs(X/20,Y/20);
-    if((!_map->isGround(X/20 - 1,Y/20 - 1) && !_map->isGround(X/20 + 1,Y/20 - 1)) || _map->isStairs(X/20,Y/20)){
-        qDebug()<<"UpdatePath";
+   // qDebug()<<"UPDATEPATH";
+   // qDebug()<<!_map->isGround(X/20 - 1,Y/20 - 1);
+   // qDebug()<< !_map->isGround(X/20 + 1,Y/20 - 1);
+   qDebug()<< !_map->isGround(_map->getHeroX(),_map->getHeroY() - 1);
+
+    if(((!_map->isGround(X/20 - 1,Y/20 - 1) && !_map->isGround(X/20 + 1,Y/20 - 1)) || _map->isStairs(X/20,Y/20)) &&
+            ((_map->isGround(_map->getHeroX(),_map->getHeroY())) || _map->isStairs(_map->getHeroX(),_map->getHeroY()))) {
+     //   qDebug()<<"UpdatePath";
         fStack = _map->findPath(X/20,Y/20);
    }
 }
+
 

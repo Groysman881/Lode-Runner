@@ -58,8 +58,12 @@ Map::Map() : QObject()
     gameMap[9][27] = 2;
     gameMap[8][27] = 2;
     gameMap[15][9] = 5;
+    for(int i =0;i < 10;i++){
+        gameMap[2][i] = 10;
+    }
     heroX = 20;
     heroY = 27;
+
 }
 
 Map::Map(int mas[40][30]) : QObject(){
@@ -102,7 +106,7 @@ bool Map::isGround(int x, int y){
     return false;
 }
 bool Map::isStairs(int x, int y){
-    if(getType(x,y) == 4){
+    if(getType(x,y) == 4 || getType(x,y) == 10){
         return true;
     }
     return false;
@@ -241,7 +245,7 @@ QStack<int>* Map::findPath(int x,int y){
         }
     }
     QQueue<Map::Coord> queue;
-    qDebug()<<"QUEUE";
+    //qDebug()<<"QUEUE";
    /* if(isGround(x,y)){
         dMap[x][y + 1] = 0;
         queue.push_back(Coord(x,y + 1));
@@ -254,11 +258,11 @@ QStack<int>* Map::findPath(int x,int y){
     qDebug()<<queue.isEmpty();
 
     while(!queue.isEmpty() && dMap[heroX][heroY] == 2147483646){
-        qDebug()<<"MainWhile";
+       // qDebug()<<"MainWhile";
         Coord point = queue.front();
         queue.pop_front();
         if(isStairs(point._x,point._y)){
-            qDebug()<<"dStairs";
+          //  qDebug()<<"dStairs";
             if((dMap[point._x - 1][point._y] >  dMap[point._x][point._y] + 1) && isGround(point._x - 1,point._y)){
                 dMap[point._x - 1][point._y] =  dMap[point._x][point._y] + 1;
                 queue.push_back(Coord(point._x - 1,point._y));
@@ -269,12 +273,12 @@ QStack<int>* Map::findPath(int x,int y){
             }
             if(dMap[point._x][point._y + 1] > dMap[point._x][point._y] + 1 ){
                 dMap[point._x][point._y + 1] = dMap[point._x][point._y] + 1;
-                qDebug()<<"down";
+               // qDebug()<<"down";
                 queue.push_back(Coord(point._x,point._y + 1));
             }
             if(dMap[point._x][point._y - 1] > dMap[point._x][point._y] + 1){
                 dMap[point._x][point._y - 1] = dMap[point._x][point._y] + 1;
-                qDebug()<<"up";
+              //  qDebug()<<"up";
                 queue.push_back(Coord(point._x,point._y - 1));
             }
             /*if((dMap[point._x - 1][point._y] >  dMap[point._x][point._y] + 1) && isGround(point._x - 1,point._y)){
@@ -287,49 +291,49 @@ QStack<int>* Map::findPath(int x,int y){
             }*/
         }
         if(hIsGround(point._x,point._y)){
-             qDebug()<<"dGround";
+          //   qDebug()<<"dGround";
             if(dMap[point._x + 1][point._y] > dMap[point._x][point._y] + 1){
                 dMap[point._x + 1][point._y] = dMap[point._x][point._y] + 1;
-                qDebug()<<"right";
+           //     qDebug()<<"right";
                 queue.push_back(Coord(point._x + 1,point._y));
             }
             if(dMap[point._x - 1][point._y] > dMap[point._x][point._y] + 1){
                 dMap[point._x - 1][point._y] = dMap[point._x][point._y] + 1;
-                qDebug()<<"left";
+           //     qDebug()<<"left";
                 queue.push_back(Coord(point._x - 1,point._y));
             }
         }
     }
-    qDebug()<<"BeforeStack";
+  //  qDebug()<<"BeforeStack";
     QStack<int>* stack = new QStack<int>;
     int hX = heroX;
     int hY = heroY;
     int tmp = dMap[hX][hY];
-    qDebug()<<tmp;
+  //  qDebug()<<tmp;
     while(tmp > 0){
         if(tmp > dMap[hX][hY + 1]){
-            qDebug()<<"1";
+         //   qDebug()<<"1";
             stack->push(1);
-            stack->push(1);
+
             hY++;
         }
         else if(tmp > dMap[hX][hY - 1]){
-             qDebug()<<"2";
+         //    qDebug()<<"2";
             stack->push(2);
-            stack->push(2);
+
             hY--;
         }
         else if(tmp > dMap[hX + 1][hY]){
-             qDebug()<<"3";
+         //    qDebug()<<"3";
             stack->push(3);
-            stack->push(3);
+
             hX++;
         }
 
         else if(tmp > dMap[hX - 1][hY]){
-             qDebug()<<"4";
+         //    qDebug()<<"4";
             stack->push(4);
-            stack->push(4);
+
             hX--;
         }
         tmp--;
@@ -337,4 +341,12 @@ QStack<int>* Map::findPath(int x,int y){
 
     return stack;
 
+}
+
+void Map::hideExStairs(int x, int y){
+    gameMap[x][y] = 0;
+}
+
+void Map::addExStairs(int x,int y){
+    gameMap[x][y] = 10;
 }

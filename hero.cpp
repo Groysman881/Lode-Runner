@@ -19,6 +19,7 @@ Hero::Hero(int x,int y) : QObject()
     moveVCounter = 0;
     isRightMove = true;
     goldCounter = 0;
+    exit = false;
 }
 
 Hero::Hero(int x,int y,Map* map) : QObject()
@@ -35,10 +36,13 @@ Hero::Hero(int x,int y,Map* map) : QObject()
     Y = y;
     isRightMove = true;
     QTimer *timer = new QTimer();
-    connect(timer,SIGNAL(timeout()),this,SLOT(getGold()));
+    //connect(timer,SIGNAL(timeout()),this,SLOT(getGold()));
+    connect(this,SIGNAL(signalUpdate()),this,SLOT(getGold()));
     connect(timer,SIGNAL(timeout()),this,SLOT(fall()));
+    connect(this,SIGNAL(signalUpdate()),this,SLOT(isExit()));
     timer->start(100);
     goldCounter = 0;
+    exit = false;
 }
 
 Hero::~Hero(){
@@ -113,6 +117,9 @@ void Hero::keyPressEvent(QKeyEvent *event)
                 }
             }*/
                 else if(event->key() == Qt::Key_Left  && !_map->hIsGround(X/20 - 1,Y / 20 - 1) ){
+                qDebug()<<_map->getHeroX();
+                qDebug()<<_map->getHeroY();
+                qDebug()<<"LLEFT";
                     setPos(x() - 10,y());
                     X = X - 10;
                     moveHCounter--;
@@ -126,7 +133,7 @@ void Hero::keyPressEvent(QKeyEvent *event)
                 else if(event->key() == Qt::Key_Right  && !_map->hIsGround(X/20 + 1,Y / 20 - 1) ){
                     setPos(x() + 10,y());
                     X = X + 10;
-                    moveHCounter--;
+                    moveHCounter++;
                     if(moveHCounter %2 == 0  && moveHCounter != 0){
                     _map->hMoveRight();
                      moveHCounter = 0;
@@ -269,18 +276,25 @@ void Hero::fall(){
 void Hero::getGold(){
     //qDebug()<<_map->getHeroX();
    // qDebug()<<_map->getHeroY();
-    if(goldCounter < _map->countOfGold){
-        if(_map->getType(X/20,Y/20) == 5){
-            //qDebug()<<"GOOOOOOLD";
-            goldCounter++;
-
-            _map->destroyGold(X/20,Y/20);
+    if(!exit){
+        if(goldCounter < _map->countOfGold){
+            if(_map->getType(X/20,Y/20) == 5){
+                //qDebug()<<"GOOOOOOLD";
+                goldCounter++;
+                _map->destroyGold(X/20,Y/20);
+            }
         }
-    }
-    else{
+        else{
+            emit goldDone();
+            exit = true;
+        }
 
     }
 }
 
-
+void Hero::isExit(){
+    if(_map->getType(X/20,Y/20) == 10){
+        emit levelComplited();
+    }
+}
 

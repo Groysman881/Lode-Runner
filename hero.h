@@ -16,12 +16,17 @@ public:
     Hero(int x,int y);
     Hero(int x,int y, Map* map);
     void keyPressEvent(QKeyEvent *event) override;
+    size_t goldCounter;
 public slots:
     void fall();
     void getGold();
+    void isExit();
 signals:
     void signalUpdate();
+    void goldDone();
+    void levelComplited();
 private:
+    bool exit;
     unsigned int health = 1;
    // Hero* _game;
     Map* _map;
@@ -30,7 +35,6 @@ private:
     int X;
     int Y;
     bool isRightMove;
-    size_t goldCounter;
     //QList <QGraphicsItem* > items;
 };
 

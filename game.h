@@ -9,14 +9,18 @@
 #include "map.h"
 #include "gold.h"
 
-class Game
+class Game : public QObject
 {
-
+    Q_OBJECT
 public:
     Game(QGraphicsScene* _scene);
     QGraphicsScene* gScene;
     Hero* createLevel();
     Map* _map;
+    void deleteLevel();
+
+public slots:
+    void addExit();
 
 private:
     //Map* _map;
@@ -25,6 +29,7 @@ private:
     QVector<Ground*> groundVec;
     QVector<Stairs*> stairsVec;
     QVector<Gold*> goldVec;
+    QVector<Stairs*> exStairsVec;
 };
 
 #endif // GAME_H

@@ -30,6 +30,8 @@ public:
     void makeEnemyGround(int x,int y);
     void makeGround(int x,int y);
     bool hIsGround(int x,int y);
+    void hideExStairs(int x,int y);
+    void addExStairs(int x,int y);
     QStack<int>* findPath(int x,int y);
     size_t countOfGold;
 private:

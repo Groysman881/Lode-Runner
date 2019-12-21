@@ -24,8 +24,6 @@ Hero::Hero(int x,int y) : QObject()
 
 Hero::Hero(int x,int y,Map* map) : QObject()
 {
- //   qDebug()<<"X"<<x;
-  //  qDebug()<<"Y"<<y;
     setPos((qreal)x,(qreal)y);
     setPixmap(QPixmap(":/new/images/hero1.png"));
     //setPos(x + 20,y);
@@ -50,15 +48,6 @@ Hero::~Hero(){
 }
 void Hero::keyPressEvent(QKeyEvent *event)
 {
-    //QList <QGraphicsItem* > items = collidingItems();
-   // qDebug()<<"X1"<<x();
-  //  qDebug()<<"Y1"<<y();
-  //  qDebug()<<"Type"<<_map->getType(X/20,Y/20);
-    //qDebug()<<"MOVEVCOUNTER";
-    //qDebug()<<moveVCounter;
-    //qDebug()<<"MOVEHCOUNTER";
-     //qDebug()<<moveHCounter;
-
     if(_map != nullptr){
         if(_map->isStairs(X/20,Y/20 + 1) && !_map->isStairs(X/20,Y/20)){
             if(event->key() == Qt::Key_Down && moveHCounter == 0){
@@ -107,16 +96,7 @@ void Hero::keyPressEvent(QKeyEvent *event)
                  emit signalUpdate();
                 }
             }
-            /*else if(event->key() == Qt::Key_Down){
-                setPos(x(),y() + 10);
-                Y = Y + 10;
-                moveVCounter -= 1;
-                if(moveHCounter % 2 == 0 && moveVCounter != 0){
-                moveVCounter = 0;
-                _map->moveUp((int)x() / 20,(int)y() / 20);
-                }
-            }*/
-                else if(event->key() == Qt::Key_Left  && !_map->hIsGround(X/20 - 1,Y / 20 - 1) ){
+            else if(event->key() == Qt::Key_Left  && !_map->hIsGround(X/20 - 1,Y / 20 - 1) ){
                 qDebug()<<_map->getHeroX();
                 qDebug()<<_map->getHeroY();
                 qDebug()<<"LLEFT";
@@ -274,8 +254,6 @@ void Hero::fall(){
 }
 
 void Hero::getGold(){
-    //qDebug()<<_map->getHeroX();
-   // qDebug()<<_map->getHeroY();
     if(!exit){
         if(goldCounter < _map->countOfGold){
             if(_map->getType(X/20,Y/20) == 5){

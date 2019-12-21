@@ -7,12 +7,13 @@
 
 Ground::Ground(int x,int y) : QObject()
 {
-    //setPos(x,y);
-    //setPixmap(QPixmap(":/new/images/ground1.png"));
-    setRect(x,y,20,20);
+    setPos(x,y);
+    setPixmap(QPixmap(":/new/images/ground1.png"));
+   // setRect(x,y,20,20);
     X = x;
     Y = y;
     currentScene = scene();
+    isDestroyed  = false;
 }
 
 Ground::~Ground(){
@@ -22,6 +23,7 @@ Ground::~Ground(){
 void Ground::getDestroyed(){
     //qDebug()<<"DESTROY";
     scene()->removeItem(this);
+    isDestroyed = true;
 }
 
 void Ground::appear(){

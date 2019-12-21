@@ -7,28 +7,6 @@
 
 Map::Map() : QObject()
 {
-   /* for(int i = 0;i < 40;i++){
-        for(int j = 0;j < 30;j++){
-            gameMap[i][j] = 0;
-        }
-    }
-
-    for(int i = 0;i < 40;i++){
-        gameMap[i][21] = 3;
-    }
-    for(int i = 0;i < 21;i++){
-        gameMap[30][i] = 4;
-    }
-    for(int i = 0;i < 30;i++){
-        gameMap[i][0] = 3;
-    }
-    for(int i = 0 ;i < 30;i++){
-        gameMap[i][9] = 3;
-    }
-    gameMap[22][20] = 5;
-    gameMap[20][8] = 2;
-    heroX = 20;
-    heroY = 20;*/
     countOfGold = 1;
     for(int i = 0;i < 40;i++){
             for(int j = 0;j < 30;j++){
@@ -115,28 +93,16 @@ int Map::getType(int x,int y){
     return gameMap[x][y];
 }
 void Map::hMoveUp(){
-    /*gameMap[x][y - 1] = gameMap[x][y];
-    gameMap[x][y] = 1;
-    gameMap[x][y + 1] = 0;*/
     heroY--;
 }
 
 void Map::hMoveDown(){
-    //gameMap[x][y + 1] = gameMap[x][y];
-    /*gameMap[x][y] = 1;
-    gameMap[x][y - 1] = 0;*/
     heroY++;
 }
 void Map::hMoveRight(){
-    //gameMap[x + 1][y] = gameMap[x][y];
-    /*gameMap[x][y] = 1;
-    gameMap[x - 1][y] = 0;*/
     heroX++;
 }
 void Map::hMoveLeft(){
-   // gameMap[x - 1][y] = gameMap[x][y];
-    /*gameMap[x][y] = 1;
-    gameMap[x + 1][y] = 0;*/
     heroX--;
 }
 void Map::setHero(int x, int y){
@@ -156,6 +122,7 @@ void Map::destroyGItem(int x,int y){
         if((groundVec[i]->getX())/20 == x && (groundVec[i]->getY())/20 == y){
            // qDebug()<<"TRUE";
             gameMap[x][y] = 6;
+            if(!groundVec[i]->isDestroyed){
             groundVec[i]->getDestroyed();
             QTimer *timer = new QTimer(this);
              timer->setSingleShot(true);
@@ -163,9 +130,12 @@ void Map::destroyGItem(int x,int y){
              connect(timer, &QTimer::timeout, [=]() {
                groundVec[i]->appear();
                gameMap[x][y] = 3;
+               groundVec[i]->isDestroyed = false;
                timer->deleteLater();
-             } );
-             timer->start(5000);
+             }
+              );
+             timer->start(5000);}
+            //groundVec[i]->isDestroyed = true;
             break;
         }
     }
@@ -245,13 +215,6 @@ QStack<int>* Map::findPath(int x,int y){
         }
     }
     QQueue<Map::Coord> queue;
-    //qDebug()<<"QUEUE";
-   /* if(isGround(x,y)){
-        dMap[x][y + 1] = 0;
-        queue.push_back(Coord(x,y + 1));
-    }
-    else{*/
-
         dMap[x][y] = 0;
         queue.push_back(Coord(x,y));
 
@@ -281,14 +244,6 @@ QStack<int>* Map::findPath(int x,int y){
               //  qDebug()<<"up";
                 queue.push_back(Coord(point._x,point._y - 1));
             }
-            /*if((dMap[point._x - 1][point._y] >  dMap[point._x][point._y] + 1) && isGround(point._x - 1,point._y)){
-                dMap[point._x - 1][point._y] =  dMap[point._x][point._y] + 1;
-                queue.push_back(Coord(point._x - 1,point._y));
-            }
-            if((dMap[point._x + 1][point._y] >  dMap[point._x][point._y] + 1) && isGround(point._x + 1,point._y)){
-                dMap[point._x + 1][point._y] =  dMap[point._x][point._y] + 1;
-                queue.push_back(Coord(point._x + 1,point._y));
-            }*/
         }
         if(hIsGround(point._x,point._y)){
           //   qDebug()<<"dGround";

@@ -3,7 +3,7 @@
 #include <QGraphicsItem>
 #include <QGraphicsPixmapItem>
 
-class Ground :public QObject, public QGraphicsRectItem{//public QGraphicsPixmapItem {
+class Ground :public QObject, public QGraphicsPixmapItem {
         Q_OBJECT
 
 public:
@@ -14,6 +14,7 @@ public:
     void getDestroyed();
     void setCurrentScene(QGraphicsScene* _scene);
     void appear();
+    bool isDestroyed;
 private:
     int X;
     int Y;

@@ -10,46 +10,48 @@ public:
     Map();
     Map(const QVector<Ground*>& g_vec);
     Map(int mas[40][30]);
-    bool isGround(int x,int y);
-    bool isStairs(int x,int y);
-    int getType(int x,int y);
+    bool isGround(int x,int y,int z);
+    bool isStairs(int x,int y, int z);
+    int getType(int x,int y, int z);
     void hMoveUp();
     void hMoveDown();
     void hMoveLeft();
     void hMoveRight();
-    void setHero(int x,int y);
+    void setHero(int x,int y,int z);
     int getHeroX();
     int getHeroY();
-    void destroyGItem(int x,int y);
+    int getHeroZ();
+    void destroyGItem(int x,int y,int z);
     void setGVector(const QVector<Ground*>& g_vec);
     void setGoldVector(const QVector<Gold*>& gold_vec);
-    int findStairsUp(int x,int y);
-    int findStairsDown(int x,int y);
-    void destroyGold(int x,int y);
-    bool isDestrGround(int x,int y);
-    void makeEnemyGround(int x,int y);
-    void makeGround(int x,int y);
-    bool hIsGround(int x,int y);
-    void hideExStairs(int x,int y);
-    void addExStairs(int x,int y);
-    QStack<int>* findPath(int x,int y);
+    void destroyGold(int x,int y,int z);
+    bool isDestrGround(int x,int y,int z);
+    void makeEnemyGround(int x,int y,int z);
+    void makeGround(int x,int y,int z);
+    bool hIsGround(int x,int y,int z);
+    void hideExStairs(int x,int y,int z);
+    void addExStairs(int x,int y, int z);
+    QStack<int>* findPath(int x,int y,int z);
     size_t countOfGold;
 private:
-    int gameMap[40][30];
+    int gameMap[5][40][30];
     int dMap[40][30];
     QVector<Ground*> groundVec;
     QVector<Gold*> goldVec;
     int heroX;
     int heroY;
+    int heroZ;
     struct Coord{
-        Coord(int x,int y){
+        Coord(int x,int y,int z){
             if(x >= 0 && x <= 40 && y >= 0 && y <= 30){
                 _x = x;
                 _y = y;
+                _z = z;
             }
         }
         int _x;
         int _y;
+        int _z;
     };
 };
 

@@ -15,21 +15,22 @@ class Game : public QObject
 public:
     Game(QGraphicsScene* _scene);
     QGraphicsScene* gScene;
-    Hero* createLevel();
-    Map* _map;
-    void deleteLevel();
-
+    void createLevel();
 public slots:
     void addExit();
-
+    void deleteLevel();
+signals:
+    void create();
 private:
-    //Map* _map;
+    Map* _map;
     Hero* _hero;
     QVector<Enemy*> enemyVec;
     QVector<Ground*> groundVec;
     QVector<Stairs*> stairsVec;
     QVector<Gold*> goldVec;
     QVector<Stairs*> exStairsVec;
+    int level;
+
 };
 
 #endif // GAME_H

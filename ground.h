@@ -8,7 +8,6 @@ class Ground :public QObject, public QGraphicsPixmapItem {
 
 public:
     Ground(int x,int y);
-    ~Ground();
     int getX();
     int getY();
     void getDestroyed();
@@ -19,7 +18,6 @@ private:
     int X;
     int Y;
     QGraphicsScene* currentScene;
-    QTimer* timer2;
 };
 
 #endif // GROUND_H

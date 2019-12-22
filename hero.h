@@ -12,9 +12,8 @@ class Hero : public QObject, public QGraphicsPixmapItem{
         Q_OBJECT
 public:
     Hero();
-    ~Hero();
-    Hero(int x,int y);
-    Hero(int x,int y, Map* map);
+    Hero(int x,int y,int z);
+    Hero(int x,int y,int z, Map* map);
     void keyPressEvent(QKeyEvent *event) override;
     size_t goldCounter;
 public slots:
@@ -28,14 +27,13 @@ signals:
 private:
     bool exit;
     unsigned int health = 1;
-   // Hero* _game;
     Map* _map;
     int moveHCounter;
     int moveVCounter;
     int X;
     int Y;
+    int Z;
     bool isRightMove;
-    //QList <QGraphicsItem* > items;
 };
 
 

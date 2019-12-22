@@ -16,19 +16,13 @@ Ground::Ground(int x,int y) : QObject()
     isDestroyed  = false;
 }
 
-Ground::~Ground(){
-    delete currentScene;
-}
-
 void Ground::getDestroyed(){
-    //qDebug()<<"DESTROY";
     scene()->removeItem(this);
     isDestroyed = true;
 }
 
 void Ground::appear(){
     currentScene->addItem(this);
-  //  qDebug()<<"ALERT!!!!";
 }
 
 void Ground::setCurrentScene(QGraphicsScene* _scene){

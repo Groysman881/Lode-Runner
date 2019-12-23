@@ -19,6 +19,7 @@ public:
 public slots:
     void addExit();
     void deleteLevel();
+    void closeGame();
 signals:
     void create();
 private:

@@ -20,6 +20,9 @@ public slots:
     void fall();
     void getDestroyed();
     void updatePath();
+signals:
+    void killHero();
+
 private:
     unsigned int health = 1;
     Map* _map;

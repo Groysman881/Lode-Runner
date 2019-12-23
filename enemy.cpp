@@ -37,7 +37,7 @@ Enemy::Enemy(int x,int y,int z,Map* eMap) : QObject(){
     connect(timer1,SIGNAL(timeout()),this,SLOT(fall()));
     connect(timer1,SIGNAL(timeout()),this,SLOT(find()));
     connect(timer1,SIGNAL(timeout()),this,SLOT(getDestroyed()));
-    timer1->start(125);
+    timer1->start(150);
 
 }
 
@@ -49,7 +49,7 @@ Enemy::~Enemy(){
     delete(timer1);
 }
 void Enemy::find(){
-    if(X/20 == _map->getHeroX() && Y/20 == _map->getHeroY() && Z == _map->getHeroZ()){qDebug()<<"Death";}
+    if(X/20 == _map->getHeroX() && Y/20 == _map->getHeroY() && Z == _map->getHeroZ()){emit killHero();}
     if(((!_map->isGround(X/20 - 1,Y/20 - 1,Z) && !_map->isGround(X/20 + 1,Y/20 - 1,Z))
         || _map->isStairs(X/20,Y/20,Z)) && fStack != nullptr && !fStack->isEmpty()){
     int temp;

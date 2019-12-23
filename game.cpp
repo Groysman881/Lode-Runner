@@ -3,6 +3,7 @@
 #include <QDebug>
 #include "map.h"
 #include <QtAlgorithms>
+#include <QGraphicsView>
 
 Game::Game(QGraphicsScene* _scene) : QObject(){
     gScene = _scene;
@@ -13,7 +14,7 @@ Game::Game(QGraphicsScene* _scene) : QObject(){
 void Game::createLevel(){
     qDebug()<<"Create";
     _map->countOfGold = 0;
-    if(level < 5) {
+    if(level < 4) {
 
     for(int i = 0; i < 40;i++){
         qDebug()<<i;
@@ -28,6 +29,7 @@ void Game::createLevel(){
             else if(_map->getType(i,j,level) == 2){
                 qDebug()<<"enemy";
                 enemyVec.push_back(new Enemy(i * 20,j * 20,level, _map));
+                connect(enemyVec.last(),SIGNAL(killHero()),this,SLOT(closeGame()));
             }
             else if(_map->getType(i,j,level) == 3){
                 groundVec.push_back(new Ground(i * 20,j * 20));
@@ -65,6 +67,9 @@ void Game::createLevel(){
     gScene->setBackgroundBrush(Qt::black);
     return;
 }
+    else{
+        gScene->views().front()->close();
+    }
 }
 
 void Game::addExit(){
@@ -118,3 +123,6 @@ void Game::deleteLevel(){
     createLevel();
 }
 
+void Game::closeGame(){
+    gScene->views().front()->close();
+}
